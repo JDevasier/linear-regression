@@ -57,7 +57,7 @@ def logistic_regression(train_file, degree, test_file):
 
         #print(w_new, np.sum(w_new-w_old))
 
-        if (w_old - w_new).all() <= 0.000001:
+        if (w_old - w_new).all() <= 0.001:
             break
 
         w_old = w_new
@@ -65,14 +65,13 @@ def logistic_regression(train_file, degree, test_file):
         ## NOW REPEAT THE CALCULATION
 
     correct = 0
-    count = 0
     for i in range(len(test_labels)):
         _y = find_y(test_data[i][:-1], w_old, degree)
-        if _y > 0.5:
-            count += 1
-            if test_labels[i] == 1:
-                correct += 1
-    print("Accuracy: ", correct / count)
+        print(_y, test_labels[i], round(_y))
+
+        if test_labels[i] == round(_y):
+            correct += 1
+    print("Accuracy: ", correct / len(test_labels))
 
 
     #### FIRST WORKING(?) VERSION!!!!
@@ -83,12 +82,6 @@ def logistic_regression(train_file, degree, test_file):
 def find_y(x, w, deg):
     return sigmoid(np.dot(w, basis_function(x, deg)))
 
-def predict_probs(X, theta):
-    return sigmoid(np.dot(X, theta))
-    
-def predict(X, theta, threshold=0.5):
-    return predict_probs(X, theta) >= threshold
-
 def convertClassLabels(data):
     labels = []
     for line in data:
@@ -97,9 +90,6 @@ def convertClassLabels(data):
             v = 1
         labels.append(v)
     return labels
-
-def loss(h, y):
-    return (-y * np.log(h) - (1 - y) * np.log(1 - h)).mean()  
 
 def sigmoid(a):
     return 1 / (1 + math.exp(-a))
@@ -113,7 +103,7 @@ def basis_function(row, deg):
 
     elif deg == 2:
         for i in range(1, len(row)): 
-            new.append(row[i])
+            #new.append(row[i])
             new.append(math.pow(row[i], deg))
         
     return new
