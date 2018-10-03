@@ -57,7 +57,7 @@ def logistic_regression(train_file, degree, test_file):
 
         #print(w_new, np.sum(w_new-w_old))
 
-        if (w_old - w_new).all() <= 0.001:
+        if (w_old - w_new).all() < 0.001:
             break
 
         w_old = w_new
@@ -115,5 +115,3 @@ def read_file(fname):
             lines.append(list(map(float, line.split())))
 
     return lines
-
-main()
