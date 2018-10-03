@@ -119,5 +119,3 @@ def read_file(fname):
             lines.append(list(map(float, line.split())))
 
     return lines
-
-main()
