@@ -61,20 +61,24 @@ def logistic_regression(train_file, degree, test_file):
             break
 
         w_old = w_new
+
+    for i in range(len(w_old)):
+        print("w{:d} = {:.4f}".format(i, w_old[i]))
     
         ## NOW REPEAT THE CALCULATION
 
     correct = 0
     for i in range(len(test_labels)):
         _y = find_y(test_data[i][:-1], w_old, degree)
-        print(_y, test_labels[i], round(_y))
+        acc = 0
+        if round(_y) == test_labels[i]:
+            acc = 1
+        print("ID={:5d}, predicted={:3d}, probability={:.4f}, true={:3d}, accuracy={:4.2f}".format(i, round(_y), _y, test_labels[i], acc))
 
+        #cutoff for classification accuracy is 0.5 by rounding
         if test_labels[i] == round(_y):
             correct += 1
-    print("Accuracy: ", correct / len(test_labels))
-
-
-    #### FIRST WORKING(?) VERSION!!!!
+    print("classification accuracy={:6.4f}".format(correct / len(test_labels)))
 
 
 
@@ -115,3 +119,5 @@ def read_file(fname):
             lines.append(list(map(float, line.split())))
 
     return lines
+
+main()
